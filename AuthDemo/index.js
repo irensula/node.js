@@ -1,18 +1,24 @@
 const express = require('express');
 const app = express();
-const User = require('./models/user');
+const shelterRoutes = require('./routes/shelters');
+const dogRoutes = require('./routes/dogs');
+const adminRoutes = require('./routes/admin');
 
-app.set('view engine', 'ejs');
-app.set('views', 'views');
+// mongoose.connect('mongodb://127.0.0.1:27017/authDemo')
+//     .then(() => {
+//         console.log('Mongo connection open.')
+//     })
+//     .catch(err => {
+//         console.log(err => {
+//             console.log('Oh no, mongo connection error.')
+//             console.log(err)
+//         })
+//     })
 
-app.get('/register', (req, res) => {
-    res.render('register');
-})
-
-app.get('/secret', (req, res) => {
-    res.send("This is a secret. You can't see me unless you are logged in.");
-})
+app.use('/shelters', shelterRoutes);
+app.use('/dogs', dogRoutes);
+app.use('/admin', adminRoutes);
 
 app.listen(3000, () => {
-    console.log('Serving your app.');
+    console.log('Serving app on localhost 3000');
 })
