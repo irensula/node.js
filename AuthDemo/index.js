@@ -52,16 +52,17 @@ app.post('/login', async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.password);
     if(validPassword) {
         req.session.user_id = user._id;
-        res.send('Yay, welcome!')
+        res.redirect('/secret')
     } else {
         res.send('Try again.');
     }
 })
 
 app.get('/secret', (req, res) => {
-    if (req.session.user_id) {
-        res.send("This is a secret. You can't see me unless you are logged in.");
+    if (!req.session.user_id) {
+        res.redirect('/login');
     }
+    res.send("This is a secret. You can't see me unless you are logged in.");
 })
 
 app.listen(3000, () => {
